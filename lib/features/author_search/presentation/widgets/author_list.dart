@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
 import 'package:realview_code_exercise/core/theme/theme.dart';
 import 'package:realview_code_exercise/core/widgets/widgets.dart';
@@ -84,9 +85,14 @@ class _AuthorListContentState extends ConsumerState<_AuthorListContent> {
       padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingS),
       itemBuilder: (_, index) {
         if (index == authors.length) {
-          return const Padding(
-            padding: EdgeInsets.all(AppSizes.paddingM),
-            child: Center(child: CircularProgressIndicator()),
+          return Padding(
+            padding: const EdgeInsets.all(AppSizes.paddingM),
+            child: Center(
+              child: LoadingAnimationWidget.fourRotatingDots(
+                color: AppColors.primary,
+                size: 32,
+              ),
+            ),
           );
         }
         return AuthorListTile(
