@@ -91,9 +91,9 @@ class _AuthorDetailsContent extends ConsumerWidget {
                   ),
                 ),
               ),
-              error: (_, _) => Text(
-                AppLocalizations.of(context)!.couldNotLoadWorks,
-                style: AppTypography.bodyMedium,
+              error: (_, _) => ErrorView(
+                message: AppLocalizations.of(context)!.couldNotLoadWorks,
+                onRetry: () => ref.invalidate(authorWorksProvider(details.key)),
               ),
             ),
           ),

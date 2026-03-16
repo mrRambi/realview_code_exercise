@@ -45,12 +45,16 @@ class AuthorSearchNotifier extends _$AuthorSearchNotifier {
     final useCase = SearchAuthors(ref.read(authorRepositoryProvider));
     final result = await useCase(trimmed, offset: 0, limit: _pageSize);
 
+    // Guard: if the user started a new search while this one was in flight, discard result.
+    if (_currentQuery != trimmed) return;
+
     state = result.fold(
       (failure) => AsyncError(failure, StackTrace.current),
       (page) {
         final hasReachedEnd =
             page.authors.length >= page.numFound || page.authors.length < _pageSize;
         if (hasReachedEnd) _cache[trimmed] = page.authors;
+
         return AsyncData(AuthorSearchState(
           authors: page.authors,
           numFound: page.numFound,
@@ -70,12 +74,16 @@ class AuthorSearchNotifier extends _$AuthorSearchNotifier {
 
     state = AsyncData(current.copyWith(isLoadingMore: true));
 
+    final querySnapshot = _currentQuery;
     final useCase = SearchAuthors(ref.read(authorRepositoryProvider));
     final result = await useCase(
-      _currentQuery,
+      querySnapshot,
       offset: current.currentOffset,
       limit: _pageSize,
     );
+
+    // Guard: discard result if query changed while loading more.
+    if (_currentQuery != querySnapshot) return;
 
     result.fold(
       (failure) => state = AsyncData(current.copyWith(isLoadingMore: false)),

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
+import 'package:realview_code_exercise/core/error/failures.dart';
 import 'package:realview_code_exercise/core/theme/theme.dart';
 import 'package:realview_code_exercise/core/widgets/widgets.dart';
 import 'package:realview_code_exercise/features/author_search/domain/entities/author.dart';
@@ -36,8 +37,8 @@ class AuthorList extends ConsumerWidget {
 
   String _errorMessage(Object error, AppLocalizations l10n) {
     return switch (error) {
-      _ when error.toString().contains('NoConnection') => l10n.errorNetwork,
-      _ when error.toString().contains('Timeout') => l10n.errorTimeout,
+      NoConnectionFailure() => l10n.errorNetwork,
+      ConnectionTimeoutFailure() => l10n.errorTimeout,
       _ => l10n.errorGeneric,
     };
   }
@@ -70,7 +71,7 @@ class _AuthorListContentState extends ConsumerState<_AuthorListContent> {
 
   void _onScroll() {
     final pos = _scrollController.position;
-    if (pos.pixels >= pos.maxScrollExtent - 200) {
+    if (pos.pixels >= pos.maxScrollExtent - AppSizes.paginationScrollThreshold) {
       ref.read(authorSearchProvider.notifier).loadMore();
     }
   }

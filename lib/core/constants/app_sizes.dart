@@ -13,4 +13,6 @@ abstract final class AppSizes {
 
   static const double wideLayoutBreakpoint = 600.0;
   static const double wideLayoutLeftPanelWidth = 360.0;
+
+  static const double paginationScrollThreshold = 200.0;
 }

@@ -1,3 +1,4 @@
+import 'package:dio/dio.dart';
 import 'package:realview_code_exercise/core/error/error.dart';
 import 'package:realview_code_exercise/features/author_search/data/datasources/author_api_client.dart';
 import 'package:realview_code_exercise/features/author_search/data/models/author_details_model.dart';
@@ -46,6 +47,8 @@ final class AuthorRemoteDatasourceImpl implements AuthorRemoteDatasource {
         limit: limit,
       );
       return (response.numFound, response.docs);
+    } on DioException {
+      rethrow;
     } catch (_) {
       throw const AuthorSearchException();
     }
@@ -55,6 +58,8 @@ final class AuthorRemoteDatasourceImpl implements AuthorRemoteDatasource {
   Future<AuthorDetailsModel> getAuthorDetails(String key) async {
     try {
       return await _apiClient.getAuthorDetails(key);
+    } on DioException {
+      rethrow;
     } catch (_) {
       throw const AuthorDetailsException();
     }
@@ -73,6 +78,8 @@ final class AuthorRemoteDatasourceImpl implements AuthorRemoteDatasource {
         offset: offset,
       );
       return response.entries;
+    } on DioException {
+      rethrow;
     } catch (_) {
       throw const AuthorWorksException();
     }
