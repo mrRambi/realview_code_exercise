@@ -1,5 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
+import 'package:realview_code_exercise/features/author_search/data/models/author_details_model.dart';
 import 'package:realview_code_exercise/features/author_search/data/models/author_search_response_model.dart';
 import 'package:retrofit/retrofit.dart';
 
@@ -15,5 +16,11 @@ abstract class AuthorApiClient {
   @GET(AppEndpoints.authorSearch)
   Future<AuthorSearchResponseModel> searchAuthors(
     @Query('q') String query,
+  );
+
+  /// GET /authors/{key}.json
+  @GET('/authors/{key}.json')
+  Future<AuthorDetailsModel> getAuthorDetails(
+    @Path('key') String key,
   );
 }

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
 import 'package:realview_code_exercise/core/theme/theme.dart';
 import 'package:realview_code_exercise/features/author_search/domain/entities/author.dart';
+import 'package:realview_code_exercise/features/author_search/presentation/pages/author_details_page.dart';
 
 /// Displays a single [Author] in a list tile with avatar, name and metadata.
 class AuthorListTile extends StatelessWidget {
@@ -24,6 +25,15 @@ class AuthorListTile extends StatelessWidget {
         leading: _AuthorAvatar(author: author),
         title: Text(author.name, style: AppTypography.titleMedium),
         subtitle: _AuthorSubtitle(author: author),
+        trailing: const Icon(Icons.chevron_right, color: AppColors.textMuted),
+        onTap: () => Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (_) => AuthorDetailsPage(
+              authorKey: author.key,
+              authorName: author.name,
+            ),
+          ),
+        ),
       ),
     );
   }
