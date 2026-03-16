@@ -41,6 +41,16 @@ fvm flutter run -d <device_id>    # e.g. -d iPhone -d emulator-5554
 fvm flutter devices               # list available devices
 ```
 
+### Running on Web (CORS)
+
+The OpenLibrary API does not send CORS headers required by browsers. To run the app on web, launch Chrome with web security disabled:
+
+```bash
+fvm flutter run -d chrome --web-browser-flag "--disable-web-security"
+```
+
+> **Note:** This flag disables CORS enforcement only in that Chrome instance and should be used for development only.
+
 ## Code generation
 
 The project uses `build_runner` for Riverpod, Freezed, Retrofit, and JSON serialization code generation. Run this after pulling changes or modifying annotated files:
