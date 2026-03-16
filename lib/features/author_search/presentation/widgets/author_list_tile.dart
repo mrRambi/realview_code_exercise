@@ -42,22 +42,31 @@ class AuthorListTile extends StatelessWidget {
   }
 }
 
-class _AuthorAvatar extends StatelessWidget {
+class _AuthorAvatar extends StatefulWidget {
   final Author author;
 
   const _AuthorAvatar({required this.author});
 
   @override
-  Widget build(BuildContext context) {
-    final photoId = author.photoId;
+  State<_AuthorAvatar> createState() => _AuthorAvatarState();
+}
 
-    if (photoId != null) {
+class _AuthorAvatarState extends State<_AuthorAvatar> {
+  bool _imageError = false;
+
+  @override
+  Widget build(BuildContext context) {
+    final photoId = widget.author.photoId;
+
+    if (photoId != null && !_imageError) {
       return CircleAvatar(
         radius: AppSizes.authorAvatarRadius,
         backgroundImage: CachedNetworkImageProvider(
           AppEndpoints.authorPhotoUrl(photoId),
         ),
-        onBackgroundImageError: (_, _) {},
+        onBackgroundImageError: (_, _) {
+          if (mounted) setState(() => _imageError = true);
+        },
         backgroundColor: AppColors.primaryLight,
         child: null,
       );

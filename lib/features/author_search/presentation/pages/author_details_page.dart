@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
 import 'package:realview_code_exercise/core/theme/theme.dart';
 import 'package:realview_code_exercise/core/widgets/widgets.dart';
@@ -80,9 +81,14 @@ class _AuthorDetailsContent extends ConsumerWidget {
               data: (works) => works.isEmpty
                   ? Text('No works found.', style: AppTypography.bodyMedium)
                   : _WorksList(works: works),
-              loading: () => const Padding(
-                padding: EdgeInsets.symmetric(vertical: AppSizes.paddingM),
-                child: Center(child: CircularProgressIndicator()),
+              loading: () => Padding(
+                padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingM),
+                child: Center(
+                  child: LoadingAnimationWidget.fourRotatingDots(
+                    color: AppColors.primary,
+                    size: 48,
+                  ),
+                ),
               ),
               error: (_, _) => Text(
                 'Could not load works.',
