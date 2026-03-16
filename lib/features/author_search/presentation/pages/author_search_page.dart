@@ -6,6 +6,7 @@ import 'package:realview_code_exercise/features/author_search/presentation/pages
 import 'package:realview_code_exercise/features/author_search/presentation/providers/selected_author_provider.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/widgets/author_list.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/widgets/author_search_bar.dart';
+import 'package:realview_code_exercise/features/author_search/presentation/widgets/popular_authors_chips.dart';
 
 /// Root page for the Book Author Search feature.
 /// Uses a responsive layout: single column on narrow screens,
@@ -29,46 +30,93 @@ class AuthorSearchPage extends ConsumerWidget {
   }
 }
 
-class _NarrowLayout extends StatelessWidget {
+class _NarrowLayout extends StatefulWidget {
   const _NarrowLayout();
 
   @override
+  State<_NarrowLayout> createState() => _NarrowLayoutState();
+}
+
+class _NarrowLayoutState extends State<_NarrowLayout> {
+  final _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    return const Column(
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         Padding(
-          padding: EdgeInsets.all(AppSizes.paddingM),
-          child: AuthorSearchBar(),
+          padding: const EdgeInsets.fromLTRB(
+            AppSizes.paddingM,
+            AppSizes.paddingM,
+            AppSizes.paddingM,
+            AppSizes.paddingS / 2,
+          ),
+          child: AuthorSearchBar(controller: _searchController),
         ),
-        Expanded(child: AuthorList()),
+        Padding(
+          padding: const EdgeInsets.only(left: AppSizes.paddingS),
+          child: PopularAuthorsChips(controller: _searchController),
+        ),
+        const Expanded(child: AuthorList()),
       ],
     );
   }
 }
 
-class _WideLayout extends StatelessWidget {
+class _WideLayout extends StatefulWidget {
   final WidgetRef ref;
 
   const _WideLayout({required this.ref});
 
   @override
+  State<_WideLayout> createState() => _WideLayoutState();
+}
+
+class _WideLayoutState extends State<_WideLayout> {
+  final _searchController = TextEditingController();
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
-    final selected = ref.watch(selectedAuthorProvider);
+    final selected = widget.ref.watch(selectedAuthorProvider);
 
     return Row(
       children: [
         SizedBox(
           width: AppSizes.wideLayoutLeftPanelWidth,
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Padding(
-                padding: EdgeInsets.all(AppSizes.paddingM),
-                child: AuthorSearchBar(),
+              Padding(
+                padding: const EdgeInsets.fromLTRB(
+                  AppSizes.paddingM,
+                  AppSizes.paddingM,
+                  AppSizes.paddingM,
+                  AppSizes.paddingS / 2,
+                ),
+                child: AuthorSearchBar(controller: _searchController),
+              ),
+              Padding(
+                padding: const EdgeInsets.only(left: AppSizes.paddingS),
+                child: PopularAuthorsChips(controller: _searchController),
               ),
               Expanded(
                 child: AuthorList(
-                  onAuthorTap: (author) =>
-                      ref.read(selectedAuthorProvider.notifier).select(author),
+                  onAuthorTap: (author) => widget.ref
+                      .read(selectedAuthorProvider.notifier)
+                      .select(author),
                 ),
               ),
             ],

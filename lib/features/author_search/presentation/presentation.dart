@@ -7,3 +7,4 @@ export 'providers/author_search_notifier.dart';
 export 'widgets/author_list.dart';
 export 'widgets/author_list_tile.dart';
 export 'widgets/author_search_bar.dart';
+export 'widgets/popular_authors_chips.dart';

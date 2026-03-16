@@ -6,21 +6,34 @@ import 'package:realview_code_exercise/core/constants/constants.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/providers/author_search_notifier.dart';
 
 /// Search bar with debounced input that triggers [AuthorSearchNotifier.search].
+///
+/// If [controller] is provided, it is used directly (and not disposed here).
+/// Otherwise an internal controller is created and managed internally.
 class AuthorSearchBar extends ConsumerStatefulWidget {
-  const AuthorSearchBar({super.key});
+  final TextEditingController? controller;
+
+  const AuthorSearchBar({super.key, this.controller});
 
   @override
   ConsumerState<AuthorSearchBar> createState() => _AuthorSearchBarState();
 }
 
 class _AuthorSearchBarState extends ConsumerState<AuthorSearchBar> {
-  final _controller = TextEditingController();
+  late final TextEditingController _controller;
+  late final bool _ownsController;
   Timer? _debounce;
+
+  @override
+  void initState() {
+    super.initState();
+    _ownsController = widget.controller == null;
+    _controller = widget.controller ?? TextEditingController();
+  }
 
   @override
   void dispose() {
     _debounce?.cancel();
-    _controller.dispose();
+    if (_ownsController) _controller.dispose();
     super.dispose();
   }
 
