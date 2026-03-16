@@ -12,7 +12,6 @@ final class DioClient {
         baseUrl: AppEndpoints.baseUrl,
         connectTimeout: AppDurations.connectTimeout,
         receiveTimeout: AppDurations.receiveTimeout,
-        sendTimeout: AppDurations.sendTimeout,
         headers: const {
           'Content-Type': 'application/json',
           'Accept': 'application/json',
