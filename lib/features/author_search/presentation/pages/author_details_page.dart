@@ -4,7 +4,9 @@ import 'package:realview_code_exercise/core/constants/constants.dart';
 import 'package:realview_code_exercise/core/theme/theme.dart';
 import 'package:realview_code_exercise/core/widgets/widgets.dart';
 import 'package:realview_code_exercise/features/author_search/domain/entities/author_details.dart';
+import 'package:realview_code_exercise/features/author_search/domain/entities/author_work.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/providers/author_details_provider.dart';
+import 'package:realview_code_exercise/features/author_search/presentation/providers/author_works_provider.dart';
 
 /// Displays full details for a single author.
 /// Accepts the author [key] and [name] for immediate AppBar title rendering
@@ -42,13 +44,15 @@ class AuthorDetailsPage extends ConsumerWidget {
   }
 }
 
-class _AuthorDetailsContent extends StatelessWidget {
+class _AuthorDetailsContent extends ConsumerWidget {
   final AuthorDetails details;
 
   const _AuthorDetailsContent({required this.details});
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context, WidgetRef ref) {
+    final worksState = ref.watch(authorWorksProvider(details.key));
+
     return SingleChildScrollView(
       padding: const EdgeInsets.all(AppSizes.paddingM),
       child: Column(
@@ -69,6 +73,23 @@ class _AuthorDetailsContent extends StatelessWidget {
               child: _LinksList(links: details.links),
             ),
           ],
+          const SizedBox(height: AppSizes.paddingL),
+          _Section(
+            title: 'Works',
+            child: worksState.when(
+              data: (works) => works.isEmpty
+                  ? Text('No works found.', style: AppTypography.bodyMedium)
+                  : _WorksList(works: works),
+              loading: () => const Padding(
+                padding: EdgeInsets.symmetric(vertical: AppSizes.paddingM),
+                child: Center(child: CircularProgressIndicator()),
+              ),
+              error: (_, _) => Text(
+                'Could not load works.',
+                style: AppTypography.bodyMedium,
+              ),
+            ),
+          ),
         ],
       ),
     );
@@ -154,6 +175,46 @@ class _Section extends StatelessWidget {
         const SizedBox(height: AppSizes.paddingS),
         child,
       ],
+    );
+  }
+}
+
+class _WorksList extends StatelessWidget {
+  final List<AuthorWork> works;
+
+  const _WorksList({required this.works});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: works
+          .map(
+            (work) => Padding(
+              padding: const EdgeInsets.only(bottom: AppSizes.paddingS / 2),
+              child: Row(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  const Icon(Icons.book_outlined, size: 14, color: AppColors.primaryMid),
+                  const SizedBox(width: 6),
+                  Expanded(
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(work.title, style: AppTypography.bodyMedium),
+                        if (work.firstPublishYear != null)
+                          Text(
+                            '${work.firstPublishYear}',
+                            style: AppTypography.bodySmall,
+                          ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          )
+          .toList(),
     );
   }
 }

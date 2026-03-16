@@ -5,6 +5,7 @@ import 'package:realview_code_exercise/core/logging/logging.dart';
 import 'package:realview_code_exercise/features/author_search/data/datasources/author_remote_datasource.dart';
 import 'package:realview_code_exercise/features/author_search/domain/entities/author_details.dart';
 import 'package:realview_code_exercise/features/author_search/domain/entities/author_search_page.dart';
+import 'package:realview_code_exercise/features/author_search/domain/entities/author_work.dart';
 import 'package:realview_code_exercise/features/author_search/domain/repositories/author_repository.dart';
 
 /// Concrete implementation of [AuthorRepository].
@@ -55,6 +56,31 @@ final class AuthorRepositoryImpl implements AuthorRepository {
     } on AuthorDetailsException catch (e) {
       _logger.error('AuthorRepositoryImpl.getAuthorDetails failed', error: e);
       return const Left(AuthorDetailsFailure());
+    } on DioException catch (e) {
+      _logger.error('AuthorRepositoryImpl network error', error: e);
+      return Left(_mapDioException(e));
+    } catch (e, st) {
+      _logger.error('AuthorRepositoryImpl unexpected error', error: e, stackTrace: st);
+      return Left(UnknownFailure(e));
+    }
+  }
+
+  @override
+  Future<Either<Failure, List<AuthorWork>>> getAuthorWorks(
+    String key, {
+    int limit = 50,
+    int offset = 0,
+  }) async {
+    try {
+      final models = await _datasource.getAuthorWorks(
+        key,
+        limit: limit,
+        offset: offset,
+      );
+      return Right(models.map((m) => m.toDomain()).toList());
+    } on AuthorWorksException catch (e) {
+      _logger.error('AuthorRepositoryImpl.getAuthorWorks failed', error: e);
+      return const Left(AuthorWorksFailure());
     } on DioException catch (e) {
       _logger.error('AuthorRepositoryImpl network error', error: e);
       return Left(_mapDioException(e));

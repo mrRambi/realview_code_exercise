@@ -2,6 +2,7 @@ import 'package:realview_code_exercise/core/error/error.dart';
 import 'package:realview_code_exercise/features/author_search/data/datasources/author_api_client.dart';
 import 'package:realview_code_exercise/features/author_search/data/models/author_details_model.dart';
 import 'package:realview_code_exercise/features/author_search/data/models/author_model.dart';
+import 'package:realview_code_exercise/features/author_search/data/models/author_works_response_model.dart';
 
 /// Abstract contract for the author remote data source.
 abstract interface class AuthorRemoteDatasource {
@@ -16,6 +17,14 @@ abstract interface class AuthorRemoteDatasource {
   /// Fetches full details for a single author by their OpenLibrary [key].
   /// Throws [AuthorDetailsException] on failure.
   Future<AuthorDetailsModel> getAuthorDetails(String key);
+
+  /// Fetches works by author [key] with optional pagination.
+  /// Throws [AuthorWorksException] on failure.
+  Future<List<AuthorWorkModel>> getAuthorWorks(
+    String key, {
+    int limit = 50,
+    int offset = 0,
+  });
 }
 
 /// Implementation backed by [AuthorApiClient] (Retrofit + Dio).
@@ -48,6 +57,24 @@ final class AuthorRemoteDatasourceImpl implements AuthorRemoteDatasource {
       return await _apiClient.getAuthorDetails(key);
     } catch (_) {
       throw const AuthorDetailsException();
+    }
+  }
+
+  @override
+  Future<List<AuthorWorkModel>> getAuthorWorks(
+    String key, {
+    int limit = 50,
+    int offset = 0,
+  }) async {
+    try {
+      final response = await _apiClient.getAuthorWorks(
+        key,
+        limit: limit,
+        offset: offset,
+      );
+      return response.entries;
+    } catch (_) {
+      throw const AuthorWorksException();
     }
   }
 }

@@ -3,4 +3,5 @@ export 'datasources/author_remote_datasource.dart';
 export 'models/author_details_model.dart';
 export 'models/author_model.dart';
 export 'models/author_search_response_model.dart';
+export 'models/author_works_response_model.dart';
 export 'repositories/author_repository_impl.dart';
