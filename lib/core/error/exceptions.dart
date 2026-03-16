@@ -22,3 +22,7 @@ final class AuthorSearchException extends AuthorException {
 final class AuthorDetailsException extends AuthorException {
   const AuthorDetailsException() : super('Failed to fetch author details.');
 }
+
+final class AuthorWorksException extends AuthorException {
+  const AuthorWorksException() : super('Failed to fetch author works.');
+}

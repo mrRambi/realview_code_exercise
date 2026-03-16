@@ -2,6 +2,7 @@ import 'package:dio/dio.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
 import 'package:realview_code_exercise/features/author_search/data/models/author_details_model.dart';
 import 'package:realview_code_exercise/features/author_search/data/models/author_search_response_model.dart';
+import 'package:realview_code_exercise/features/author_search/data/models/author_works_response_model.dart';
 import 'package:retrofit/retrofit.dart';
 
 part 'author_api_client.g.dart';
@@ -25,4 +26,12 @@ abstract class AuthorApiClient {
   Future<AuthorDetailsModel> getAuthorDetails(
     @Path('key') String key,
   );
+
+  /// GET /authors/{key}/works.json?limit={limit}&offset={offset}
+  @GET('/authors/{key}/works.json')
+  Future<AuthorWorksResponseModel> getAuthorWorks(
+    @Path('key') String key, {
+    @Query('limit') int limit = 50,
+    @Query('offset') int offset = 0,
+  });
 }

@@ -10,6 +10,9 @@ abstract final class AppEndpoints {
   /// Author details: GET /authors/{key}.json
   static String authorDetails(String key) => '/authors/$key.json';
 
+  /// Author works: GET /authors/{key}/works.json?limit={limit}&offset={offset}
+  static String authorWorks(String key) => '/authors/$key/works.json';
+
   /// Author photo URL built from the author key (OLID).
   /// Size: S, M, L
   static String authorPhotoUrl(String olid, {String size = 'M'}) =>

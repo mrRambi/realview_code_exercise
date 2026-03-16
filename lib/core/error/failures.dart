@@ -53,3 +53,7 @@ final class AuthorSearchFailure extends AuthorFailure {
 final class AuthorDetailsFailure extends AuthorFailure {
   const AuthorDetailsFailure();
 }
+
+final class AuthorWorksFailure extends AuthorFailure {
+  const AuthorWorksFailure();
+}
