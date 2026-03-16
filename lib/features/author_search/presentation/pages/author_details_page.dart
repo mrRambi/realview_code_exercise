@@ -1,4 +1,3 @@
-import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
@@ -83,66 +82,25 @@ class _AuthorHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final photoId = details.photoIds.isNotEmpty ? details.photoIds.first : null;
-
-    return Row(
+    return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _AuthorPhoto(photoId: photoId, name: details.name),
-        const SizedBox(width: AppSizes.paddingM),
-        Expanded(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(details.name, style: AppTypography.headlineMedium),
-              if (details.personalName != null &&
-                  details.personalName != details.name)
-                Text(details.personalName!, style: AppTypography.bodySmall),
-              const SizedBox(height: AppSizes.paddingS),
-              if (details.birthDate != null)
-                _MetaRow(
-                  icon: Icons.cake_outlined,
-                  label: details.birthDate!,
-                ),
-              if (details.deathDate != null)
-                _MetaRow(
-                  icon: Icons.history_outlined,
-                  label: details.deathDate!,
-                ),
-            ],
+        Text(details.name, style: AppTypography.headlineMedium),
+        if (details.personalName != null &&
+            details.personalName != details.name)
+          Text(details.personalName!, style: AppTypography.bodySmall),
+        const SizedBox(height: AppSizes.paddingS),
+        if (details.birthDate != null)
+          _MetaRow(
+            icon: Icons.cake_outlined,
+            label: details.birthDate!,
           ),
-        ),
+        if (details.deathDate != null)
+          _MetaRow(
+            icon: Icons.history_outlined,
+            label: details.deathDate!,
+          ),
       ],
-    );
-  }
-}
-
-class _AuthorPhoto extends StatelessWidget {
-  final int? photoId;
-  final String name;
-
-  const _AuthorPhoto({required this.photoId, required this.name});
-
-  @override
-  Widget build(BuildContext context) {
-    if (photoId != null) {
-      return CircleAvatar(
-        radius: 48,
-        backgroundImage: CachedNetworkImageProvider(
-          AppEndpoints.authorPhotoUrl(photoId.toString(), size: 'L'),
-        ),
-        onBackgroundImageError: (_, _) {},
-        backgroundColor: AppColors.primaryLight,
-      );
-    }
-
-    return CircleAvatar(
-      radius: 48,
-      backgroundColor: AppColors.primaryLight,
-      child: Text(
-        name.isNotEmpty ? name[0].toUpperCase() : '?',
-        style: AppTypography.headlineMedium.copyWith(color: AppColors.primary),
-      ),
     );
   }
 }

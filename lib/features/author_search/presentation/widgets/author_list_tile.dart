@@ -66,10 +66,7 @@ class _AuthorAvatar extends StatelessWidget {
     return CircleAvatar(
       radius: AppSizes.authorAvatarRadius,
       backgroundColor: AppColors.primaryLight,
-      child: Text(
-        author.name.isNotEmpty ? author.name[0].toUpperCase() : '?',
-        style: AppTypography.titleMedium.copyWith(color: AppColors.primary),
-      ),
+      child: Icon(Icons.person, color: AppColors.primary),
     );
   }
 }
