@@ -1,5 +1,5 @@
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'author_model.dart';
+import 'package:realview_code_exercise/features/author_search/data/models/author_model.dart';
 
 part 'author_search_response_model.freezed.dart';
 part 'author_search_response_model.g.dart';

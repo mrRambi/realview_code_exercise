@@ -53,7 +53,6 @@ class _AuthorSearchBarState extends ConsumerState<AuthorSearchBar> {
       decoration: InputDecoration(
         hintText: AppLocalizations.of(context)!.searchHint,
         prefixIcon: const Icon(Icons.search),
-        suffixIcon: null,
       ),
       textInputAction: TextInputAction.search,
     );

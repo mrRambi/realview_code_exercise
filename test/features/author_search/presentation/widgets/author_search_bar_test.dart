@@ -18,15 +18,14 @@ void main() {
 
   setUp(() {
     mockRepository = MockAuthorRepository();
-    when(() => mockRepository.searchAuthors(any()))
-        .thenAnswer((_) async => Right(AuthorSearchPage(numFound: 0, authors: [])));
+    when(() => mockRepository.searchAuthors(any())).thenAnswer(
+      (_) async => const Right(AuthorSearchPage(numFound: 0, authors: [])),
+    );
   });
 
   ProviderContainer makeContainer() => ProviderContainer(
-        overrides: [
-          authorRepositoryProvider.overrideWithValue(mockRepository),
-        ],
-      );
+    overrides: [authorRepositoryProvider.overrideWithValue(mockRepository)],
+  );
 
   group('AuthorSearchBar', () {
     testWidgets('renders a TextField', (tester) async {
@@ -83,8 +82,9 @@ void main() {
       expect(find.text('initial'), findsOneWidget);
     });
 
-    testWidgets('triggers search after debounce when text is entered',
-        (tester) async {
+    testWidgets('triggers search after debounce when text is entered', (
+      tester,
+    ) async {
       final container = makeContainer();
       addTearDown(container.dispose);
 
@@ -100,8 +100,9 @@ void main() {
       verify(() => mockRepository.searchAuthors('tolkien')).called(1);
     });
 
-    testWidgets('does not trigger search before debounce elapses',
-        (tester) async {
+    testWidgets('does not trigger search before debounce elapses', (
+      tester,
+    ) async {
       final container = makeContainer();
       addTearDown(container.dispose);
 
@@ -117,8 +118,9 @@ void main() {
       verifyNever(() => mockRepository.searchAuthors(any()));
     });
 
-    testWidgets('updates notifier state to empty when text cleared',
-        (tester) async {
+    testWidgets('updates notifier state to empty when text cleared', (
+      tester,
+    ) async {
       final container = makeContainer();
       addTearDown(container.dispose);
 

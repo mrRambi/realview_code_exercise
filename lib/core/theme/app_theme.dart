@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'app_colors.dart';
-import 'app_typography.dart';
+import 'package:realview_code_exercise/core/theme/app_colors.dart';
+import 'package:realview_code_exercise/core/theme/app_typography.dart';
 
 /// Application-wide Material theme configuration.
 abstract final class AppTheme {
@@ -10,13 +10,12 @@ abstract final class AppTheme {
     useMaterial3: true,
     colorScheme: ColorScheme.fromSeed(
       seedColor: AppColors.primary,
-      brightness: Brightness.light,
       surface: AppColors.surface,
     ),
     scaffoldBackgroundColor: AppColors.background,
 
     // AppBar – pure white, hairline bottom border, no elevation shadow
-    appBarTheme: AppBarTheme(
+    appBarTheme: const AppBarTheme(
       backgroundColor: AppColors.surface,
       foregroundColor: AppColors.textDark,
       elevation: 0,
@@ -25,13 +24,11 @@ abstract final class AppTheme {
       titleTextStyle: AppTypography.headlineMedium,
       surfaceTintColor: Colors.transparent,
       shadowColor: Colors.transparent,
-      shape: Border(
-        bottom: BorderSide(color: AppColors.divider, width: 1),
-      ),
+      shape: Border(bottom: BorderSide(color: AppColors.divider)),
     ),
 
     // Cards – white with subtle border, no shadow
-    cardTheme: CardThemeData(
+    cardTheme: const CardThemeData(
       color: AppColors.surface,
       elevation: 0,
       shape: RoundedRectangleBorder(
@@ -42,7 +39,7 @@ abstract final class AppTheme {
     ),
 
     // Search / text field – light grey fill, no border in rest state
-    inputDecorationTheme: InputDecorationTheme(
+    inputDecorationTheme: const InputDecorationTheme(
       filled: true,
       fillColor: AppColors.surfaceVariant,
       hintStyle: TextStyle(color: AppColors.textMuted, fontSize: 14),
@@ -75,7 +72,7 @@ abstract final class AppTheme {
         backgroundColor: AppColors.primary,
         foregroundColor: Colors.white,
         textStyle: const TextStyle(fontSize: 14, fontWeight: FontWeight.w600),
-        shape: RoundedRectangleBorder(
+        shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(8)),
         ),
       ),

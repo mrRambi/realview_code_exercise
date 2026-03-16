@@ -7,12 +7,9 @@ part 'author_details_model.g.dart';
 /// JSON model for a link object returned inside the author details response.
 @freezed
 abstract class AuthorLinkModel with _$AuthorLinkModel {
+  const factory AuthorLinkModel({required String title, required String url}) =
+      _AuthorLinkModel;
   const AuthorLinkModel._();
-
-  const factory AuthorLinkModel({
-    required String title,
-    required String url,
-  }) = _AuthorLinkModel;
 
   factory AuthorLinkModel.fromJson(Map<String, dynamic> json) =>
       _$AuthorLinkModelFromJson(json);
@@ -41,8 +38,6 @@ class _BioConverter implements JsonConverter<String?, Object?> {
 /// Data model for GET /authors/{key}.json
 @freezed
 abstract class AuthorDetailsModel with _$AuthorDetailsModel {
-  const AuthorDetailsModel._();
-
   const factory AuthorDetailsModel({
     required String key,
     required String name,
@@ -53,19 +48,20 @@ abstract class AuthorDetailsModel with _$AuthorDetailsModel {
     @Default([]) List<int> photos,
     @Default([]) List<AuthorLinkModel> links,
   }) = _AuthorDetailsModel;
+  const AuthorDetailsModel._();
 
   factory AuthorDetailsModel.fromJson(Map<String, dynamic> json) =>
       _$AuthorDetailsModelFromJson(json);
 
   /// Maps this model to the domain [AuthorDetails] entity.
   AuthorDetails toDomain() => AuthorDetails(
-        key: key.replaceFirst('/authors/', ''),
-        name: name,
-        personalName: personalName,
-        birthDate: birthDate,
-        deathDate: deathDate,
-        bio: bio,
-        photoIds: photos.where((id) => id > 0).toList(),
-        links: links.map((l) => l.toDomain()).toList(),
-      );
+    key: key.replaceFirst('/authors/', ''),
+    name: name,
+    personalName: personalName,
+    birthDate: birthDate,
+    deathDate: deathDate,
+    bio: bio,
+    photoIds: photos.where((id) => id > 0).toList(),
+    links: links.map((l) => l.toDomain()).toList(),
+  );
 }

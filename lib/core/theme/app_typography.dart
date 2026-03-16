@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'app_colors.dart';
+import 'package:realview_code_exercise/core/theme/app_colors.dart';
 
 /// Application text styles.
 abstract final class AppTypography {

@@ -18,15 +18,14 @@ void main() {
 
   setUp(() {
     mockRepository = MockAuthorRepository();
-    when(() => mockRepository.searchAuthors(any()))
-        .thenAnswer((_) async => Right(AuthorSearchPage(numFound: 0, authors: [])));
+    when(() => mockRepository.searchAuthors(any())).thenAnswer(
+      (_) async => const Right(AuthorSearchPage(numFound: 0, authors: [])),
+    );
   });
 
   ProviderContainer makeContainer() => ProviderContainer(
-        overrides: [
-          authorRepositoryProvider.overrideWithValue(mockRepository),
-        ],
-      );
+    overrides: [authorRepositoryProvider.overrideWithValue(mockRepository)],
+  );
 
   group('PopularAuthorsChips', () {
     testWidgets('renders "Popular authors" button', (tester) async {
@@ -65,8 +64,9 @@ void main() {
       expect(find.byIcon(Icons.people_outline), findsOneWidget);
     });
 
-    testWidgets('opens menu and shows author chips on button tap',
-        (tester) async {
+    testWidgets('opens menu and shows author chips on button tap', (
+      tester,
+    ) async {
       final container = makeContainer();
       addTearDown(container.dispose);
 
@@ -113,8 +113,9 @@ void main() {
       expect(controller.text, 'Stephen King');
     });
 
-    testWidgets('selecting a chip triggers search for that author',
-        (tester) async {
+    testWidgets('selecting a chip triggers search for that author', (
+      tester,
+    ) async {
       final container = makeContainer();
       addTearDown(container.dispose);
 
@@ -167,7 +168,7 @@ void main() {
 
     testWidgets('search state reflects selected author', (tester) async {
       when(() => mockRepository.searchAuthors('Mark Twain')).thenAnswer(
-        (_) async => Right(AuthorSearchPage(numFound: 0, authors: [])),
+        (_) async => const Right(AuthorSearchPage(numFound: 0, authors: [])),
       );
 
       final container = makeContainer();

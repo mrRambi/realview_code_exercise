@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
-import 'package:realview_code_exercise/l10n/app_localizations.dart';
 import 'package:realview_code_exercise/core/theme/theme.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/providers/author_search_notifier.dart';
+import 'package:realview_code_exercise/l10n/app_localizations.dart';
 
 const _popularAuthors = [
   'Stephen King',
@@ -31,7 +31,8 @@ class PopularAuthorsChips extends ConsumerStatefulWidget {
   const PopularAuthorsChips({super.key, required this.controller});
 
   @override
-  ConsumerState<PopularAuthorsChips> createState() => _PopularAuthorsChipsState();
+  ConsumerState<PopularAuthorsChips> createState() =>
+      _PopularAuthorsChipsState();
 }
 
 class _PopularAuthorsChipsState extends ConsumerState<PopularAuthorsChips> {
@@ -43,12 +44,14 @@ class _PopularAuthorsChipsState extends ConsumerState<PopularAuthorsChips> {
       controller: _menuController,
       crossAxisUnconstrained: false,
       style: MenuStyle(
-        backgroundColor: WidgetStatePropertyAll(AppColors.surface),
+        backgroundColor: const WidgetStatePropertyAll(AppColors.surface),
         elevation: const WidgetStatePropertyAll(4),
         shape: WidgetStatePropertyAll(
           RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
         ),
-        padding: const WidgetStatePropertyAll(EdgeInsets.all(AppSizes.paddingM)),
+        padding: const WidgetStatePropertyAll(
+          EdgeInsets.all(AppSizes.paddingM),
+        ),
       ),
       menuChildren: [
         SizedBox(

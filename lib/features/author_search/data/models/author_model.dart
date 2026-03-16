@@ -8,8 +8,6 @@ part 'author_model.g.dart';
 /// Maps directly to the JSON structure returned by /search/authors.json
 @freezed
 abstract class AuthorModel with _$AuthorModel {
-  const AuthorModel._();
-
   const factory AuthorModel({
     required String key,
     required String name,
@@ -17,17 +15,18 @@ abstract class AuthorModel with _$AuthorModel {
     @JsonKey(name: 'top_work') String? topWork,
     @JsonKey(name: 'work_count') int? workCount,
   }) = _AuthorModel;
+  const AuthorModel._();
 
   factory AuthorModel.fromJson(Map<String, dynamic> json) =>
       _$AuthorModelFromJson(json);
 
   /// Maps this data model to the domain [Author] entity.
   Author toDomain() => Author(
-        key: key.replaceFirst('/authors/', ''),
-        name: name,
-        birthDate: birthDate,
-        topWork: topWork,
-        workCount: workCount,
-        photoId: key.replaceFirst('/authors/', ''),
-      );
+    key: key.replaceFirst('/authors/', ''),
+    name: name,
+    birthDate: birthDate,
+    topWork: topWork,
+    workCount: workCount,
+    photoId: key.replaceFirst('/authors/', ''),
+  );
 }

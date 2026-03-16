@@ -7,8 +7,6 @@ part 'author_works_response_model.g.dart';
 /// Data model for a single work entry in GET /authors/{key}/works.json
 @freezed
 abstract class AuthorWorkModel with _$AuthorWorkModel {
-  const AuthorWorkModel._();
-
   const factory AuthorWorkModel({
     required String key,
     required String title,
@@ -16,27 +14,27 @@ abstract class AuthorWorkModel with _$AuthorWorkModel {
     @JsonKey(name: 'cover_id') int? coverId,
     @JsonKey(name: 'first_publish_year') int? firstPublishYear,
   }) = _AuthorWorkModel;
+  const AuthorWorkModel._();
 
   factory AuthorWorkModel.fromJson(Map<String, dynamic> json) =>
       _$AuthorWorkModelFromJson(json);
 
   AuthorWork toDomain() => AuthorWork(
-        key: key.replaceFirst('/works/', ''),
-        title: title,
-        coverEditionKey: coverEditionKey,
-        coverId: coverId,
-        firstPublishYear: firstPublishYear,
-      );
+    key: key.replaceFirst('/works/', ''),
+    title: title,
+    coverEditionKey: coverEditionKey,
+    coverId: coverId,
+    firstPublishYear: firstPublishYear,
+  );
 }
 
 /// Response wrapper for GET /authors/{key}/works.json
 @freezed
 abstract class AuthorWorksResponseModel with _$AuthorWorksResponseModel {
-  const AuthorWorksResponseModel._();
-
   const factory AuthorWorksResponseModel({
     @Default([]) List<AuthorWorkModel> entries,
   }) = _AuthorWorksResponseModel;
+  const AuthorWorksResponseModel._();
 
   factory AuthorWorksResponseModel.fromJson(Map<String, dynamic> json) =>
       _$AuthorWorksResponseModelFromJson(json);

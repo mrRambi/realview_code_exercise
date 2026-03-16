@@ -14,15 +14,12 @@ void main() {
     workCount: 403,
   );
 
-  const tAuthorMinimal = Author(
-    key: 'OL1A',
-    name: 'Unknown Author',
-  );
+  const tAuthorMinimal = Author(key: 'OL1A', name: 'Unknown Author');
 
   group('AuthorListTile', () {
     testWidgets('shows author name', (tester) async {
       await tester.pumpWidget(
-        buildTestApp(AuthorListTile(author: tAuthor)),
+        buildTestApp(const AuthorListTile(author: tAuthor)),
       );
       await tester.pumpAndSettle();
 
@@ -31,7 +28,7 @@ void main() {
 
     testWidgets('shows birth date in subtitle', (tester) async {
       await tester.pumpWidget(
-        buildTestApp(AuthorListTile(author: tAuthor)),
+        buildTestApp(const AuthorListTile(author: tAuthor)),
       );
       await tester.pumpAndSettle();
 
@@ -40,7 +37,7 @@ void main() {
 
     testWidgets('shows work count in subtitle', (tester) async {
       await tester.pumpWidget(
-        buildTestApp(AuthorListTile(author: tAuthor)),
+        buildTestApp(const AuthorListTile(author: tAuthor)),
       );
       await tester.pumpAndSettle();
 
@@ -49,7 +46,7 @@ void main() {
 
     testWidgets('shows top work in subtitle', (tester) async {
       await tester.pumpWidget(
-        buildTestApp(AuthorListTile(author: tAuthor)),
+        buildTestApp(const AuthorListTile(author: tAuthor)),
       );
       await tester.pumpAndSettle();
 
@@ -58,7 +55,7 @@ void main() {
 
     testWidgets('shows person icon avatar when no photoId', (tester) async {
       await tester.pumpWidget(
-        buildTestApp(AuthorListTile(author: tAuthorMinimal)),
+        buildTestApp(const AuthorListTile(author: tAuthorMinimal)),
       );
       await tester.pumpAndSettle();
 
@@ -67,7 +64,7 @@ void main() {
 
     testWidgets('shows chevron trailing icon', (tester) async {
       await tester.pumpWidget(
-        buildTestApp(AuthorListTile(author: tAuthor)),
+        buildTestApp(const AuthorListTile(author: tAuthor)),
       );
       await tester.pumpAndSettle();
 
@@ -77,10 +74,9 @@ void main() {
     testWidgets('calls onTap callback when tapped', (tester) async {
       var tapped = false;
       await tester.pumpWidget(
-        buildTestApp(AuthorListTile(
-          author: tAuthor,
-          onTap: () => tapped = true,
-        )),
+        buildTestApp(
+          AuthorListTile(author: tAuthor, onTap: () => tapped = true),
+        ),
       );
       await tester.pumpAndSettle();
 
@@ -92,7 +88,7 @@ void main() {
 
     testWidgets('renders with no optional fields set', (tester) async {
       await tester.pumpWidget(
-        buildTestApp(AuthorListTile(author: tAuthorMinimal)),
+        buildTestApp(const AuthorListTile(author: tAuthorMinimal)),
       );
       await tester.pumpAndSettle();
 

@@ -1,5 +1,5 @@
 import 'package:flutter/foundation.dart';
-import 'app_logger.dart';
+import 'package:realview_code_exercise/core/logging/app_logger.dart';
 
 /// Debug-only logger implementation using [debugPrint].
 /// In production (kReleaseMode) all output is suppressed.

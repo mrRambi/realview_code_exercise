@@ -10,6 +10,7 @@ class SelectedAuthor extends _$SelectedAuthor {
   @override
   Author? build() => null;
 
+  // ignore: use_setters_to_change_properties
   void select(Author author) => state = author;
   void clear() => state = null;
 }

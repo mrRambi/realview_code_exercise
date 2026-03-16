@@ -33,38 +33,47 @@ void main() {
   final tPage = AuthorSearchPage(numFound: 1, authors: tAuthors);
 
   group('SearchAuthors', () {
-    test('should return AuthorSearchPage when repository call succeeds', () async {
-      // Arrange
-      when(() => mockRepository.searchAuthors(tQuery))
-          .thenAnswer((_) async => Right(tPage));
+    test(
+      'should return AuthorSearchPage when repository call succeeds',
+      () async {
+        // Arrange
+        when(
+          () => mockRepository.searchAuthors(tQuery),
+        ).thenAnswer((_) async => Right(tPage));
 
-      // Act
-      final result = await sut(tQuery);
+        // Act
+        final result = await sut(tQuery);
 
-      // Assert
-      expect(result, Right(tPage));
-      verify(() => mockRepository.searchAuthors(tQuery)).called(1);
-      verifyNoMoreInteractions(mockRepository);
-    });
+        // Assert
+        expect(result, Right(tPage));
+        verify(() => mockRepository.searchAuthors(tQuery)).called(1);
+        verifyNoMoreInteractions(mockRepository);
+      },
+    );
 
-    test('should return AuthorSearchFailure when repository returns failure', () async {
-      // Arrange
-      when(() => mockRepository.searchAuthors(tQuery))
-          .thenAnswer((_) async => const Left(AuthorSearchFailure()));
+    test(
+      'should return AuthorSearchFailure when repository returns failure',
+      () async {
+        // Arrange
+        when(
+          () => mockRepository.searchAuthors(tQuery),
+        ).thenAnswer((_) async => const Left(AuthorSearchFailure()));
 
-      // Act
-      final result = await sut(tQuery);
+        // Act
+        final result = await sut(tQuery);
 
-      // Assert
-      expect(result, const Left(AuthorSearchFailure()));
-      verify(() => mockRepository.searchAuthors(tQuery)).called(1);
-      verifyNoMoreInteractions(mockRepository);
-    });
+        // Assert
+        expect(result, const Left(AuthorSearchFailure()));
+        verify(() => mockRepository.searchAuthors(tQuery)).called(1);
+        verifyNoMoreInteractions(mockRepository);
+      },
+    );
 
     test('should return NetworkFailure when there is no connection', () async {
       // Arrange
-      when(() => mockRepository.searchAuthors(tQuery))
-          .thenAnswer((_) async => const Left(NoConnectionFailure()));
+      when(
+        () => mockRepository.searchAuthors(tQuery),
+      ).thenAnswer((_) async => const Left(NoConnectionFailure()));
 
       // Act
       final result = await sut(tQuery);
@@ -78,8 +87,9 @@ void main() {
     test('should forward the exact query string to the repository', () async {
       // Arrange
       const tSpecificQuery = 'george orwell';
-      when(() => mockRepository.searchAuthors(tSpecificQuery))
-          .thenAnswer((_) async => Right(AuthorSearchPage(numFound: 0, authors: [])));
+      when(() => mockRepository.searchAuthors(tSpecificQuery)).thenAnswer(
+        (_) async => const Right(AuthorSearchPage(numFound: 0, authors: [])),
+      );
 
       // Act
       await sut(tSpecificQuery);

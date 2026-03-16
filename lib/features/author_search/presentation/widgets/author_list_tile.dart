@@ -2,9 +2,9 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
 import 'package:realview_code_exercise/core/theme/theme.dart';
-import 'package:realview_code_exercise/l10n/app_localizations.dart';
 import 'package:realview_code_exercise/features/author_search/domain/entities/author.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/pages/author_details_page.dart';
+import 'package:realview_code_exercise/l10n/app_localizations.dart';
 
 /// Displays a single [Author] in a list tile with avatar, name and metadata.
 class AuthorListTile extends StatelessWidget {
@@ -28,8 +28,13 @@ class AuthorListTile extends StatelessWidget {
         leading: _AuthorAvatar(author: author),
         title: Text(author.name, style: AppTypography.titleMedium),
         subtitle: _AuthorSubtitle(author: author),
-        trailing: const Icon(Icons.chevron_right, size: 18, color: AppColors.primaryMid),
-        onTap: onTap ??
+        trailing: const Icon(
+          Icons.chevron_right,
+          size: 18,
+          color: AppColors.primaryMid,
+        ),
+        onTap:
+            onTap ??
             () => Navigator.of(context).push(
               MaterialPageRoute(
                 builder: (_) => AuthorDetailsPage(
@@ -69,11 +74,10 @@ class _AuthorAvatarState extends State<_AuthorAvatar> {
           if (mounted) setState(() => _imageError = true);
         },
         backgroundColor: AppColors.primaryLight,
-        child: null,
       );
     }
 
-    return CircleAvatar(
+    return const CircleAvatar(
       radius: AppSizes.authorAvatarRadius,
       backgroundColor: AppColors.primaryLight,
       child: Icon(Icons.person, color: AppColors.primary),
@@ -90,7 +94,8 @@ class _AuthorSubtitle extends StatelessWidget {
   Widget build(BuildContext context) {
     final parts = <String>[
       if (author.birthDate != null) author.birthDate!,
-      if (author.workCount != null) '${author.workCount} ${AppLocalizations.of(context)!.works}',
+      if (author.workCount != null)
+        '${author.workCount} ${AppLocalizations.of(context)!.works}',
     ];
 
     if (author.topWork != null) {

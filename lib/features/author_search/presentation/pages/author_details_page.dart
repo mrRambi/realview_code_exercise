@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:realview_code_exercise/l10n/app_localizations.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
 import 'package:realview_code_exercise/core/theme/theme.dart';
@@ -9,6 +8,7 @@ import 'package:realview_code_exercise/features/author_search/domain/entities/au
 import 'package:realview_code_exercise/features/author_search/domain/entities/author_work.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/providers/author_details_provider.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/providers/author_works_provider.dart';
+import 'package:realview_code_exercise/l10n/app_localizations.dart';
 
 /// Displays full details for a single author.
 /// Accepts the author [key] and [name] for immediate AppBar title rendering
@@ -80,10 +80,15 @@ class _AuthorDetailsContent extends ConsumerWidget {
             title: AppLocalizations.of(context)!.worksSection,
             child: worksState.when(
               data: (works) => works.isEmpty
-                  ? Text(AppLocalizations.of(context)!.noWorksFound, style: AppTypography.bodyMedium)
+                  ? Text(
+                      AppLocalizations.of(context)!.noWorksFound,
+                      style: AppTypography.bodyMedium,
+                    )
                   : _WorksList(works: works),
               loading: () => Padding(
-                padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingM),
+                padding: const EdgeInsets.symmetric(
+                  vertical: AppSizes.paddingM,
+                ),
                 child: Center(
                   child: LoadingAnimationWidget.fourRotatingDots(
                     color: AppColors.primary,
@@ -119,15 +124,9 @@ class _AuthorHeader extends StatelessWidget {
           Text(details.personalName!, style: AppTypography.bodySmall),
         const SizedBox(height: AppSizes.paddingS),
         if (details.birthDate != null)
-          _MetaRow(
-            icon: Icons.cake_outlined,
-            label: details.birthDate!,
-          ),
+          _MetaRow(icon: Icons.cake_outlined, label: details.birthDate!),
         if (details.deathDate != null)
-          _MetaRow(
-            icon: Icons.history_outlined,
-            label: details.deathDate!,
-          ),
+          _MetaRow(icon: Icons.history_outlined, label: details.deathDate!),
       ],
     );
   }
@@ -202,7 +201,11 @@ class _WorksList extends StatelessWidget {
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Icon(Icons.book_outlined, size: 14, color: AppColors.primaryMid),
+                  const Icon(
+                    Icons.book_outlined,
+                    size: 14,
+                    color: AppColors.primaryMid,
+                  ),
                   const SizedBox(width: 6),
                   Expanded(
                     child: Column(

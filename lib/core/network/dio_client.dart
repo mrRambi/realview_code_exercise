@@ -1,6 +1,6 @@
 import 'package:dio/dio.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
-import 'interceptors/logging_interceptor.dart';
+import 'package:realview_code_exercise/core/network/interceptors/logging_interceptor.dart';
 
 /// Configured Dio instance with timeouts and a logging interceptor.
 final class DioClient {

@@ -31,56 +31,58 @@ class AuthorSearchNotifier extends _$AuthorSearchNotifier {
 
     if (_cache.containsKey(trimmed)) {
       final cached = _cache[trimmed]!;
-      state = AsyncData(AuthorSearchState(
-        authors: cached,
-        numFound: cached.length,
-        currentOffset: cached.length,
-        hasReachedEnd: true,
-      ));
+      state = AsyncData(
+        AuthorSearchState(
+          authors: cached,
+          numFound: cached.length,
+          currentOffset: cached.length,
+          hasReachedEnd: true,
+        ),
+      );
       return;
     }
 
     state = const AsyncLoading();
 
     final useCase = SearchAuthors(ref.read(authorRepositoryProvider));
-    final result = await useCase(trimmed, offset: 0, limit: _pageSize);
+    final result = await useCase(trimmed);
 
     // Guard: if the user started a new search while this one was in flight, discard result.
     if (_currentQuery != trimmed) return;
 
-    state = result.fold(
-      (failure) => AsyncError(failure, StackTrace.current),
-      (page) {
-        final hasReachedEnd =
-            page.authors.length >= page.numFound || page.authors.length < _pageSize;
-        if (hasReachedEnd) _cache[trimmed] = page.authors;
+    state = result.fold((failure) => AsyncError(failure, StackTrace.current), (
+      page,
+    ) {
+      final hasReachedEnd =
+          page.authors.length >= page.numFound ||
+          page.authors.length < _pageSize;
+      if (hasReachedEnd) _cache[trimmed] = page.authors;
 
-        return AsyncData(AuthorSearchState(
+      return AsyncData(
+        AuthorSearchState(
           authors: page.authors,
           numFound: page.numFound,
           currentOffset: page.authors.length,
           hasReachedEnd: hasReachedEnd,
-        ));
-      },
-    );
+        ),
+      );
+    });
   }
 
   /// Loads the next page of results for the current query.
   /// No-op if already at end, currently loading more, or query is empty.
   Future<void> loadMore() async {
     final current = state.value;
-    if (current == null || current.hasReachedEnd || current.isLoadingMore) return;
+    if (current == null || current.hasReachedEnd || current.isLoadingMore) {
+      return;
+    }
     if (_currentQuery.isEmpty) return;
 
     state = AsyncData(current.copyWith(isLoadingMore: true));
 
     final querySnapshot = _currentQuery;
     final useCase = SearchAuthors(ref.read(authorRepositoryProvider));
-    final result = await useCase(
-      querySnapshot,
-      offset: current.currentOffset,
-      limit: _pageSize,
-    );
+    final result = await useCase(querySnapshot, offset: current.currentOffset);
 
     // Guard: discard result if query changed while loading more.
     if (_currentQuery != querySnapshot) return;
@@ -92,13 +94,14 @@ class AuthorSearchNotifier extends _$AuthorSearchNotifier {
         final hasReachedEnd =
             newList.length >= page.numFound || page.authors.length < _pageSize;
         if (hasReachedEnd) _cache[_currentQuery] = newList;
-        state = AsyncData(AuthorSearchState(
-          authors: newList,
-          numFound: page.numFound,
-          currentOffset: newList.length,
-          isLoadingMore: false,
-          hasReachedEnd: hasReachedEnd,
-        ));
+        state = AsyncData(
+          AuthorSearchState(
+            authors: newList,
+            numFound: page.numFound,
+            currentOffset: newList.length,
+            hasReachedEnd: hasReachedEnd,
+          ),
+        );
       },
     );
   }
