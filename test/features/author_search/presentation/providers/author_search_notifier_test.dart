@@ -4,9 +4,11 @@ import 'package:fpdart/fpdart.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:realview_code_exercise/core/error/error.dart';
 import 'package:realview_code_exercise/features/author_search/domain/entities/author.dart';
+import 'package:realview_code_exercise/features/author_search/domain/entities/author_search_page.dart';
 import 'package:realview_code_exercise/features/author_search/domain/repositories/author_repository.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/providers/author_repository_provider.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/providers/author_search_notifier.dart';
+import 'package:realview_code_exercise/features/author_search/presentation/providers/author_search_state.dart';
 
 class MockAuthorRepository extends Mock implements AuthorRepository {}
 
@@ -37,8 +39,10 @@ void main() {
     ),
   ];
 
+  final tPage = AuthorSearchPage(numFound: 1, authors: tAuthors);
+
   group('AuthorSearchNotifier', () {
-    test('initial state is AsyncData with empty list', () {
+    test('initial state is AsyncData with empty AuthorSearchState', () {
       // Arrange
       final container = makeContainer();
       addTearDown(container.dispose);
@@ -47,13 +51,13 @@ void main() {
       final state = container.read(authorSearchProvider);
 
       // Assert
-      expect(state, const AsyncData<List<Author>>([]));
+      expect(state, const AsyncData<AuthorSearchState>(AuthorSearchState()));
     });
 
     test('emits AsyncData with authors when search succeeds', () async {
       // Arrange
       when(() => mockRepository.searchAuthors(tQuery))
-          .thenAnswer((_) async => Right(tAuthors));
+          .thenAnswer((_) async => Right(tPage));
       final container = makeContainer();
       addTearDown(container.dispose);
 
@@ -62,7 +66,9 @@ void main() {
 
       // Assert
       final state = container.read(authorSearchProvider);
-      expect(state, AsyncData<List<Author>>(tAuthors));
+      expect(state.hasValue, true);
+      expect(state.value!.authors, tAuthors);
+      expect(state.value!.numFound, 1);
     });
 
     test('emits AsyncError with failure when search fails', () async {
@@ -81,10 +87,10 @@ void main() {
       expect(state.error, isA<AuthorSearchFailure>());
     });
 
-    test('resets to empty AsyncData when query is empty', () async {
+    test('resets to empty AuthorSearchState when query is empty', () async {
       // Arrange — first perform a successful search
       when(() => mockRepository.searchAuthors(tQuery))
-          .thenAnswer((_) async => Right(tAuthors));
+          .thenAnswer((_) async => Right(tPage));
       final container = makeContainer();
       addTearDown(container.dispose);
       await container.read(authorSearchProvider.notifier).search(tQuery);
@@ -93,13 +99,13 @@ void main() {
       await container.read(authorSearchProvider.notifier).search('');
 
       // Assert
-      expect(container.read(authorSearchProvider), const AsyncData<List<Author>>([]));
+      expect(container.read(authorSearchProvider), const AsyncData<AuthorSearchState>(AuthorSearchState()));
       // Repository should not be called for empty query
       verify(() => mockRepository.searchAuthors(tQuery)).called(1);
       verifyNoMoreInteractions(mockRepository);
     });
 
-    test('resets to empty AsyncData when query is whitespace only', () async {
+    test('resets to empty AuthorSearchState when query is whitespace only', () async {
       // Arrange
       final container = makeContainer();
       addTearDown(container.dispose);
@@ -108,7 +114,7 @@ void main() {
       await container.read(authorSearchProvider.notifier).search('   ');
 
       // Assert
-      expect(container.read(authorSearchProvider), const AsyncData<List<Author>>([]));
+      expect(container.read(authorSearchProvider), const AsyncData<AuthorSearchState>(AuthorSearchState()));
       verifyZeroInteractions(mockRepository);
     });
 

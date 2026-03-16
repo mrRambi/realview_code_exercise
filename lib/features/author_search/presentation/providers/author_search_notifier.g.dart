@@ -8,18 +8,16 @@ part of 'author_search_notifier.dart';
 
 // GENERATED CODE - DO NOT MODIFY BY HAND
 // ignore_for_file: type=lint, type=warning
-/// Manages the author search state as [AsyncValue<List<Author>>].
-/// Initial state is an empty list (idle — no search performed yet).
+/// Manages author search state with pagination and in-memory caching.
 
 @ProviderFor(AuthorSearchNotifier)
 final authorSearchProvider = AuthorSearchNotifierProvider._();
 
-/// Manages the author search state as [AsyncValue<List<Author>>].
-/// Initial state is an empty list (idle — no search performed yet).
+/// Manages author search state with pagination and in-memory caching.
 final class AuthorSearchNotifierProvider
-    extends $NotifierProvider<AuthorSearchNotifier, AsyncValue<List<Author>>> {
-  /// Manages the author search state as [AsyncValue<List<Author>>].
-  /// Initial state is an empty list (idle — no search performed yet).
+    extends
+        $NotifierProvider<AuthorSearchNotifier, AsyncValue<AuthorSearchState>> {
+  /// Manages author search state with pagination and in-memory caching.
   AuthorSearchNotifierProvider._()
     : super(
         from: null,
@@ -39,33 +37,41 @@ final class AuthorSearchNotifierProvider
   AuthorSearchNotifier create() => AuthorSearchNotifier();
 
   /// {@macro riverpod.override_with_value}
-  Override overrideWithValue(AsyncValue<List<Author>> value) {
+  Override overrideWithValue(AsyncValue<AuthorSearchState> value) {
     return $ProviderOverride(
       origin: this,
-      providerOverride: $SyncValueProvider<AsyncValue<List<Author>>>(value),
+      providerOverride: $SyncValueProvider<AsyncValue<AuthorSearchState>>(
+        value,
+      ),
     );
   }
 }
 
 String _$authorSearchNotifierHash() =>
-    r'032d2a6de6fbf3848757a58a6640674e38e4a225';
+    r'3d33da05db93c60ecb644ad77a28e0fe07ef022b';
 
-/// Manages the author search state as [AsyncValue<List<Author>>].
-/// Initial state is an empty list (idle — no search performed yet).
+/// Manages author search state with pagination and in-memory caching.
 
 abstract class _$AuthorSearchNotifier
-    extends $Notifier<AsyncValue<List<Author>>> {
-  AsyncValue<List<Author>> build();
+    extends $Notifier<AsyncValue<AuthorSearchState>> {
+  AsyncValue<AuthorSearchState> build();
   @$mustCallSuper
   @override
   void runBuild() {
     final ref =
-        this.ref as $Ref<AsyncValue<List<Author>>, AsyncValue<List<Author>>>;
+        this.ref
+            as $Ref<
+              AsyncValue<AuthorSearchState>,
+              AsyncValue<AuthorSearchState>
+            >;
     final element =
         ref.element
             as $ClassProviderElement<
-              AnyNotifier<AsyncValue<List<Author>>, AsyncValue<List<Author>>>,
-              AsyncValue<List<Author>>,
+              AnyNotifier<
+                AsyncValue<AuthorSearchState>,
+                AsyncValue<AuthorSearchState>
+              >,
+              AsyncValue<AuthorSearchState>,
               Object?,
               Object?
             >;

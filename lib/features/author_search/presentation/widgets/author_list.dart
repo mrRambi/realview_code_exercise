@@ -5,18 +5,24 @@ import 'package:realview_code_exercise/core/theme/theme.dart';
 import 'package:realview_code_exercise/core/widgets/widgets.dart';
 import 'package:realview_code_exercise/features/author_search/domain/entities/author.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/providers/author_search_notifier.dart';
+import 'package:realview_code_exercise/features/author_search/presentation/providers/author_search_state.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/widgets/author_list_tile.dart';
 
 /// Displays the author search results, reacting to [authorSearchProvider] state.
 class AuthorList extends ConsumerWidget {
-  const AuthorList({super.key});
+  final void Function(Author)? onAuthorTap;
+
+  const AuthorList({super.key, this.onAuthorTap});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(authorSearchProvider);
 
     return state.when(
-      data: (authors) => _AuthorListContent(authors: authors),
+      data: (searchState) => _AuthorListContent(
+        searchState: searchState,
+        onAuthorTap: onAuthorTap,
+      ),
       loading: () => const LoadingView(),
       error: (error, _) => ErrorView(
         message: _errorMessage(error),
@@ -34,21 +40,62 @@ class AuthorList extends ConsumerWidget {
   }
 }
 
-class _AuthorListContent extends StatelessWidget {
-  final List<Author> authors;
+class _AuthorListContent extends ConsumerStatefulWidget {
+  final AuthorSearchState searchState;
+  final void Function(Author)? onAuthorTap;
 
-  const _AuthorListContent({required this.authors});
+  const _AuthorListContent({required this.searchState, this.onAuthorTap});
+
+  @override
+  ConsumerState<_AuthorListContent> createState() => _AuthorListContentState();
+}
+
+class _AuthorListContentState extends ConsumerState<_AuthorListContent> {
+  final _scrollController = ScrollController();
+
+  @override
+  void initState() {
+    super.initState();
+    _scrollController.addListener(_onScroll);
+  }
+
+  @override
+  void dispose() {
+    _scrollController.dispose();
+    super.dispose();
+  }
+
+  void _onScroll() {
+    final pos = _scrollController.position;
+    if (pos.pixels >= pos.maxScrollExtent - 200) {
+      ref.read(authorSearchProvider.notifier).loadMore();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
-    if (authors.isEmpty) {
-      return const _EmptyState();
-    }
+    final authors = widget.searchState.authors;
+
+    if (authors.isEmpty) return const _EmptyState();
 
     return ListView.builder(
-      itemCount: authors.length,
+      controller: _scrollController,
+      itemCount: authors.length + (widget.searchState.isLoadingMore ? 1 : 0),
       padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingS),
-      itemBuilder: (_, index) => AuthorListTile(author: authors[index]),
+      itemBuilder: (_, index) {
+        if (index == authors.length) {
+          return const Padding(
+            padding: EdgeInsets.all(AppSizes.paddingM),
+            child: Center(child: CircularProgressIndicator()),
+          );
+        }
+        return AuthorListTile(
+          author: authors[index],
+          onTap: widget.onAuthorTap != null
+              ? () => widget.onAuthorTap!(authors[index])
+              : null,
+        );
+      },
     );
   }
 }

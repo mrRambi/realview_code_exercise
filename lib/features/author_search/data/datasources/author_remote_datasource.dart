@@ -6,8 +6,12 @@ import 'package:realview_code_exercise/features/author_search/data/models/author
 /// Abstract contract for the author remote data source.
 abstract interface class AuthorRemoteDatasource {
   /// Fetches authors matching [query] from the OpenLibrary API.
-  /// Throws [AuthorSearchException] on failure.
-  Future<List<AuthorModel>> searchAuthors(String query);
+  /// Returns a record of (numFound, docs). Throws [AuthorSearchException] on failure.
+  Future<(int numFound, List<AuthorModel> docs)> searchAuthors(
+    String query, {
+    int offset = 0,
+    int limit = 20,
+  });
 
   /// Fetches full details for a single author by their OpenLibrary [key].
   /// Throws [AuthorDetailsException] on failure.
@@ -21,10 +25,18 @@ final class AuthorRemoteDatasourceImpl implements AuthorRemoteDatasource {
   const AuthorRemoteDatasourceImpl(this._apiClient);
 
   @override
-  Future<List<AuthorModel>> searchAuthors(String query) async {
+  Future<(int, List<AuthorModel>)> searchAuthors(
+    String query, {
+    int offset = 0,
+    int limit = 20,
+  }) async {
     try {
-      final response = await _apiClient.searchAuthors(query);
-      return response.docs;
+      final response = await _apiClient.searchAuthors(
+        query,
+        offset: offset,
+        limit: limit,
+      );
+      return (response.numFound, response.docs);
     } catch (_) {
       throw const AuthorSearchException();
     }

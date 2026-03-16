@@ -10,4 +10,7 @@ abstract final class AppSizes {
   static const double authorAvatarRadius = 28.0;
   static const double searchBarBorderRadius = 12.0;
   static const double cardBorderRadius = 12.0;
+
+  static const double wideLayoutBreakpoint = 600.0;
+  static const double wideLayoutLeftPanelWidth = 360.0;
 }

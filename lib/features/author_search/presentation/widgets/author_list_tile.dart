@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
 import 'package:realview_code_exercise/core/theme/theme.dart';
@@ -7,8 +8,9 @@ import 'package:realview_code_exercise/features/author_search/presentation/pages
 /// Displays a single [Author] in a list tile with avatar, name and metadata.
 class AuthorListTile extends StatelessWidget {
   final Author author;
+  final VoidCallback? onTap;
 
-  const AuthorListTile({super.key, required this.author});
+  const AuthorListTile({super.key, required this.author, this.onTap});
 
   @override
   Widget build(BuildContext context) {
@@ -26,14 +28,15 @@ class AuthorListTile extends StatelessWidget {
         title: Text(author.name, style: AppTypography.titleMedium),
         subtitle: _AuthorSubtitle(author: author),
         trailing: const Icon(Icons.chevron_right, color: AppColors.textMuted),
-        onTap: () => Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (_) => AuthorDetailsPage(
-              authorKey: author.key,
-              authorName: author.name,
+        onTap: onTap ??
+            () => Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (_) => AuthorDetailsPage(
+                  authorKey: author.key,
+                  authorName: author.name,
+                ),
+              ),
             ),
-          ),
-        ),
       ),
     );
   }
@@ -51,7 +54,7 @@ class _AuthorAvatar extends StatelessWidget {
     if (photoId != null) {
       return CircleAvatar(
         radius: AppSizes.authorAvatarRadius,
-        backgroundImage: NetworkImage(
+        backgroundImage: CachedNetworkImageProvider(
           AppEndpoints.authorPhotoUrl(photoId),
         ),
         onBackgroundImageError: (_, _) {},

@@ -3,8 +3,8 @@ import 'package:fpdart/fpdart.dart';
 import 'package:realview_code_exercise/core/error/error.dart';
 import 'package:realview_code_exercise/core/logging/logging.dart';
 import 'package:realview_code_exercise/features/author_search/data/datasources/author_remote_datasource.dart';
-import 'package:realview_code_exercise/features/author_search/domain/entities/author.dart';
 import 'package:realview_code_exercise/features/author_search/domain/entities/author_details.dart';
+import 'package:realview_code_exercise/features/author_search/domain/entities/author_search_page.dart';
 import 'package:realview_code_exercise/features/author_search/domain/repositories/author_repository.dart';
 
 /// Concrete implementation of [AuthorRepository].
@@ -20,10 +20,21 @@ final class AuthorRepositoryImpl implements AuthorRepository {
        _logger = logger;
 
   @override
-  Future<Either<Failure, List<Author>>> searchAuthors(String query) async {
+  Future<Either<Failure, AuthorSearchPage>> searchAuthors(
+    String query, {
+    int offset = 0,
+    int limit = 20,
+  }) async {
     try {
-      final models = await _datasource.searchAuthors(query);
-      return Right(models.map((m) => m.toDomain()).toList());
+      final (numFound, models) = await _datasource.searchAuthors(
+        query,
+        offset: offset,
+        limit: limit,
+      );
+      return Right(AuthorSearchPage(
+        numFound: numFound,
+        authors: models.map((m) => m.toDomain()).toList(),
+      ));
     } on AuthorSearchException catch (e) {
       _logger.error('AuthorRepositoryImpl.searchAuthors failed', error: e);
       return const Left(AuthorSearchFailure());

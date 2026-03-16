@@ -1,3 +1,4 @@
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
@@ -12,26 +13,32 @@ import 'package:realview_code_exercise/features/author_search/presentation/provi
 class AuthorDetailsPage extends ConsumerWidget {
   final String authorKey;
   final String authorName;
+  final bool embedded;
 
   const AuthorDetailsPage({
     super.key,
     required this.authorKey,
     required this.authorName,
+    this.embedded = false,
   });
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(authorDetailsProvider(authorKey));
 
+    final body = state.when(
+      data: (details) => _AuthorDetailsContent(details: details),
+      loading: () => const LoadingView(),
+      error: (_, _) => ErrorView(
+        onRetry: () => ref.invalidate(authorDetailsProvider(authorKey)),
+      ),
+    );
+
+    if (embedded) return body;
+
     return Scaffold(
       appBar: AppBar(title: Text(authorName)),
-      body: state.when(
-        data: (details) => _AuthorDetailsContent(details: details),
-        loading: () => const LoadingView(),
-        error: (_, _) => ErrorView(
-          onRetry: () => ref.invalidate(authorDetailsProvider(authorKey)),
-        ),
-      ),
+      body: body,
     );
   }
 }
@@ -121,7 +128,7 @@ class _AuthorPhoto extends StatelessWidget {
     if (photoId != null) {
       return CircleAvatar(
         radius: 48,
-        backgroundImage: NetworkImage(
+        backgroundImage: CachedNetworkImageProvider(
           AppEndpoints.authorPhotoUrl(photoId.toString(), size: 'L'),
         ),
         onBackgroundImageError: (_, _) {},

@@ -8,6 +8,7 @@ import 'package:realview_code_exercise/features/author_search/data/datasources/a
 import 'package:realview_code_exercise/features/author_search/data/models/author_model.dart';
 import 'package:realview_code_exercise/features/author_search/data/repositories/author_repository_impl.dart';
 import 'package:realview_code_exercise/features/author_search/domain/entities/author.dart';
+import 'package:realview_code_exercise/features/author_search/domain/entities/author_search_page.dart';
 
 class MockAuthorRemoteDatasource extends Mock implements AuthorRemoteDatasource {}
 class MockAppLogger extends Mock implements AppLogger {}
@@ -54,10 +55,10 @@ void main() {
   ];
 
   group('searchAuthors', () {
-    test('should return list of Author entities when datasource succeeds', () async {
+    test('should return AuthorSearchPage when datasource succeeds', () async {
       // Arrange
       when(() => mockDatasource.searchAuthors(tQuery))
-          .thenAnswer((_) async => tAuthorModels);
+          .thenAnswer((_) async => (1, tAuthorModels));
 
       // Act
       final result = await sut.searchAuthors(tQuery);
@@ -66,7 +67,11 @@ void main() {
       expect(result.isRight(), true);
       result.fold(
         (_) => fail('Expected Right'),
-        (authors) => expect(authors, tAuthors),
+        (page) {
+          expect(page, isA<AuthorSearchPage>());
+          expect(page.numFound, 1);
+          expect(page.authors, tAuthors);
+        },
       );
       verify(() => mockDatasource.searchAuthors(tQuery)).called(1);
     });

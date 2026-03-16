@@ -3,6 +3,7 @@ import 'package:fpdart/fpdart.dart';
 import 'package:mocktail/mocktail.dart';
 import 'package:realview_code_exercise/core/error/error.dart';
 import 'package:realview_code_exercise/features/author_search/domain/entities/author.dart';
+import 'package:realview_code_exercise/features/author_search/domain/entities/author_search_page.dart';
 import 'package:realview_code_exercise/features/author_search/domain/repositories/author_repository.dart';
 import 'package:realview_code_exercise/features/author_search/domain/usecases/search_authors.dart';
 
@@ -29,17 +30,19 @@ void main() {
     ),
   ];
 
+  final tPage = AuthorSearchPage(numFound: 1, authors: tAuthors);
+
   group('SearchAuthors', () {
-    test('should return list of authors when repository call succeeds', () async {
+    test('should return AuthorSearchPage when repository call succeeds', () async {
       // Arrange
       when(() => mockRepository.searchAuthors(tQuery))
-          .thenAnswer((_) async => Right(tAuthors));
+          .thenAnswer((_) async => Right(tPage));
 
       // Act
       final result = await sut(tQuery);
 
       // Assert
-      expect(result, Right(tAuthors));
+      expect(result, Right(tPage));
       verify(() => mockRepository.searchAuthors(tQuery)).called(1);
       verifyNoMoreInteractions(mockRepository);
     });
@@ -76,7 +79,7 @@ void main() {
       // Arrange
       const tSpecificQuery = 'george orwell';
       when(() => mockRepository.searchAuthors(tSpecificQuery))
-          .thenAnswer((_) async => const Right([]));
+          .thenAnswer((_) async => Right(AuthorSearchPage(numFound: 0, authors: [])));
 
       // Act
       await sut(tSpecificQuery);

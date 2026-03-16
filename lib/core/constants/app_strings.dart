@@ -10,4 +10,5 @@ abstract final class AppStrings {
   static const String errorTimeout = 'Request timed out.';
   static const String retry = 'Retry';
   static const String works = 'works';
+  static const String selectAuthorHint = 'Select an author to view details';
 }

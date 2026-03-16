@@ -12,11 +12,13 @@ part 'author_api_client.g.dart';
 abstract class AuthorApiClient {
   factory AuthorApiClient(Dio dio) = _AuthorApiClient;
 
-  /// GET /search/authors.json?q={query}
+  /// GET /search/authors.json?q={query}&offset={offset}&limit={limit}
   @GET(AppEndpoints.authorSearch)
   Future<AuthorSearchResponseModel> searchAuthors(
-    @Query('q') String query,
-  );
+    @Query('q') String query, {
+    @Query('offset') int offset = 0,
+    @Query('limit') int limit = 20,
+  });
 
   /// GET /authors/{key}.json
   @GET('/authors/{key}.json')

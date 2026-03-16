@@ -22,9 +22,17 @@ class _AuthorApiClient implements AuthorApiClient {
   final ParseErrorLogger? errorLogger;
 
   @override
-  Future<AuthorSearchResponseModel> searchAuthors(String query) async {
+  Future<AuthorSearchResponseModel> searchAuthors(
+    String query, {
+    int offset = 0,
+    int limit = 20,
+  }) async {
     final _extra = <String, dynamic>{};
-    final queryParameters = <String, dynamic>{r'q': query};
+    final queryParameters = <String, dynamic>{
+      r'q': query,
+      r'offset': offset,
+      r'limit': limit,
+    };
     final _headers = <String, dynamic>{};
     const Map<String, dynamic>? _data = null;
     final _options = _setStreamType<AuthorSearchResponseModel>(
