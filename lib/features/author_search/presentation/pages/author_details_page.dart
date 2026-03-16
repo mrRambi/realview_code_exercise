@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:realview_code_exercise/l10n/app_localizations.dart';
 import 'package:loading_animation_widget/loading_animation_widget.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
 import 'package:realview_code_exercise/core/theme/theme.dart';
@@ -63,23 +64,23 @@ class _AuthorDetailsContent extends ConsumerWidget {
           if (details.bio != null) ...[
             const SizedBox(height: AppSizes.paddingL),
             _Section(
-              title: 'Biography',
+              title: AppLocalizations.of(context)!.biography,
               child: Text(details.bio!, style: AppTypography.bodyMedium),
             ),
           ],
           if (details.links.isNotEmpty) ...[
             const SizedBox(height: AppSizes.paddingL),
             _Section(
-              title: 'Links',
+              title: AppLocalizations.of(context)!.links,
               child: _LinksList(links: details.links),
             ),
           ],
           const SizedBox(height: AppSizes.paddingL),
           _Section(
-            title: 'Works',
+            title: AppLocalizations.of(context)!.worksSection,
             child: worksState.when(
               data: (works) => works.isEmpty
-                  ? Text('No works found.', style: AppTypography.bodyMedium)
+                  ? Text(AppLocalizations.of(context)!.noWorksFound, style: AppTypography.bodyMedium)
                   : _WorksList(works: works),
               loading: () => Padding(
                 padding: const EdgeInsets.symmetric(vertical: AppSizes.paddingM),
@@ -91,7 +92,7 @@ class _AuthorDetailsContent extends ConsumerWidget {
                 ),
               ),
               error: (_, _) => Text(
-                'Could not load works.',
+                AppLocalizations.of(context)!.couldNotLoadWorks,
                 style: AppTypography.bodyMedium,
               ),
             ),

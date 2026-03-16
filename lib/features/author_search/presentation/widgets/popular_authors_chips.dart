@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
+import 'package:realview_code_exercise/l10n/app_localizations.dart';
 import 'package:realview_code_exercise/core/theme/theme.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/providers/author_search_notifier.dart';
 
@@ -81,7 +82,7 @@ class _PopularAuthorsChipsState extends ConsumerState<PopularAuthorsChips> {
             }
           },
           icon: const Icon(Icons.people_outline, size: 16),
-          label: const Text('Popular authors'),
+          label: Text(AppLocalizations.of(context)!.popularAuthors),
           style: TextButton.styleFrom(
             foregroundColor: AppColors.primaryMid,
             textStyle: AppTypography.bodySmall.copyWith(

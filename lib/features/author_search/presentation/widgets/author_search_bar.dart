@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/providers/author_search_notifier.dart';
+import 'package:realview_code_exercise/l10n/app_localizations.dart';
 
 /// Search bar with debounced input that triggers [AuthorSearchNotifier.search].
 ///
@@ -49,9 +50,9 @@ class _AuthorSearchBarState extends ConsumerState<AuthorSearchBar> {
     return TextField(
       controller: _controller,
       onChanged: _onChanged,
-      decoration: const InputDecoration(
-        hintText: AppStrings.searchHint,
-        prefixIcon: Icon(Icons.search),
+      decoration: InputDecoration(
+        hintText: AppLocalizations.of(context)!.searchHint,
+        prefixIcon: const Icon(Icons.search),
         suffixIcon: null,
       ),
       textInputAction: TextInputAction.search,

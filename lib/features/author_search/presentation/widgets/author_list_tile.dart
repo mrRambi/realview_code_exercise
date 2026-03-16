@@ -2,6 +2,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:realview_code_exercise/core/constants/constants.dart';
 import 'package:realview_code_exercise/core/theme/theme.dart';
+import 'package:realview_code_exercise/l10n/app_localizations.dart';
 import 'package:realview_code_exercise/features/author_search/domain/entities/author.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/pages/author_details_page.dart';
 
@@ -89,7 +90,7 @@ class _AuthorSubtitle extends StatelessWidget {
   Widget build(BuildContext context) {
     final parts = <String>[
       if (author.birthDate != null) author.birthDate!,
-      if (author.workCount != null) '${author.workCount} ${AppStrings.works}',
+      if (author.workCount != null) '${author.workCount} ${AppLocalizations.of(context)!.works}',
     ];
 
     if (author.topWork != null) {

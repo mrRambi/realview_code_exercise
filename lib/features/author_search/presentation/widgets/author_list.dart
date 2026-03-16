@@ -8,6 +8,7 @@ import 'package:realview_code_exercise/features/author_search/domain/entities/au
 import 'package:realview_code_exercise/features/author_search/presentation/providers/author_search_notifier.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/providers/author_search_state.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/widgets/author_list_tile.dart';
+import 'package:realview_code_exercise/l10n/app_localizations.dart';
 
 /// Displays the author search results, reacting to [authorSearchProvider] state.
 class AuthorList extends ConsumerWidget {
@@ -18,6 +19,7 @@ class AuthorList extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
     final state = ref.watch(authorSearchProvider);
+    final l10n = AppLocalizations.of(context)!;
 
     return state.when(
       data: (searchState) => _AuthorListContent(
@@ -26,17 +28,17 @@ class AuthorList extends ConsumerWidget {
       ),
       loading: () => const LoadingView(),
       error: (error, _) => ErrorView(
-        message: _errorMessage(error),
+        message: _errorMessage(error, l10n),
         onRetry: () => ref.invalidate(authorSearchProvider),
       ),
     );
   }
 
-  String _errorMessage(Object error) {
+  String _errorMessage(Object error, AppLocalizations l10n) {
     return switch (error) {
-      _ when error.toString().contains('NoConnection') => AppStrings.errorNetwork,
-      _ when error.toString().contains('Timeout') => AppStrings.errorTimeout,
-      _ => AppStrings.errorGeneric,
+      _ when error.toString().contains('NoConnection') => l10n.errorNetwork,
+      _ when error.toString().contains('Timeout') => l10n.errorTimeout,
+      _ => l10n.errorGeneric,
     };
   }
 }
@@ -111,6 +113,8 @@ class _EmptyState extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = AppLocalizations.of(context)!;
+
     return Center(
       child: Column(
         mainAxisSize: MainAxisSize.min,
@@ -130,7 +134,7 @@ class _EmptyState extends StatelessWidget {
           ),
           const SizedBox(height: AppSizes.paddingM),
           Text(
-            AppStrings.searchHint,
+            l10n.searchHint,
             style: AppTypography.bodyMedium.copyWith(color: AppColors.textMuted),
           ),
         ],

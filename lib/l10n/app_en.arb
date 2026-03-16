@@ -1,0 +1,63 @@
+{
+  "@@locale": "en",
+  "appTitle": "Book Author Search",
+  "@appTitle": {
+    "description": "The title of the application"
+  },
+  "searchHint": "Search for an author...",
+  "@searchHint": {
+    "description": "Hint text in the search bar"
+  },
+  "noResults": "No authors found.",
+  "@noResults": {
+    "description": "Message shown when search returns no results"
+  },
+  "errorGeneric": "Something went wrong. Please try again.",
+  "@errorGeneric": {
+    "description": "Generic error message"
+  },
+  "errorNetwork": "No internet connection.",
+  "@errorNetwork": {
+    "description": "Error message when there is no network"
+  },
+  "errorTimeout": "Request timed out.",
+  "@errorTimeout": {
+    "description": "Error message when request times out"
+  },
+  "retry": "Retry",
+  "@retry": {
+    "description": "Label for retry button"
+  },
+  "works": "works",
+  "@works": {
+    "description": "Label for number of works by an author"
+  },
+  "selectAuthorHint": "Select an author to view details",
+  "@selectAuthorHint": {
+    "description": "Hint shown on the right panel when no author is selected"
+  },
+  "biography": "Biography",
+  "@biography": {
+    "description": "Section title for author biography"
+  },
+  "links": "Links",
+  "@links": {
+    "description": "Section title for author links"
+  },
+  "worksSection": "Works",
+  "@worksSection": {
+    "description": "Section title for author works"
+  },
+  "noWorksFound": "No works found.",
+  "@noWorksFound": {
+    "description": "Message shown when no works are found for an author"
+  },
+  "couldNotLoadWorks": "Could not load works.",
+  "@couldNotLoadWorks": {
+    "description": "Error message when works fail to load"
+  },
+  "popularAuthors": "Popular authors",
+  "@popularAuthors": {
+    "description": "Label for the popular authors button"
+  }
+}
