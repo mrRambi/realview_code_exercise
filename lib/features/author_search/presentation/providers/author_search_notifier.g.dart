@@ -48,7 +48,7 @@ final class AuthorSearchNotifierProvider
 }
 
 String _$authorSearchNotifierHash() =>
-    r'8c60bab3b28d445e903289fb08f0408714ff3a39';
+    r'489553c1fc3a71d8baadfbfbb9b51bf585c161d5';
 
 /// Manages author search state with pagination and in-memory caching.
 

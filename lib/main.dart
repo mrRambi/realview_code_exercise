@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:realview_code_exercise/core/theme/theme.dart';
+import 'package:realview_code_exercise/core/widgets/no_connection_banner.dart';
 import 'package:realview_code_exercise/features/author_search/presentation/pages/author_search_page.dart';
 import 'package:realview_code_exercise/l10n/app_localizations.dart';
 
@@ -26,7 +27,7 @@ class MainApp extends StatelessWidget {
         GlobalCupertinoLocalizations.delegate,
       ],
       supportedLocales: AppLocalizations.supportedLocales,
-      home: const AuthorSearchPage(),
+      home: const NoConnectionBanner(child: AuthorSearchPage()),
     );
   }
 }
