@@ -159,8 +159,8 @@ class _MetaRow extends StatelessWidget {
       padding: const EdgeInsets.only(bottom: AppSizes.paddingS / 2),
       child: Row(
         children: [
-          Icon(icon, size: 14, color: AppColors.textMuted),
-          const SizedBox(width: 4),
+          Icon(icon, size: 14, color: AppColors.primaryMid),
+          const SizedBox(width: 6),
           Text(label, style: AppTypography.bodySmall),
         ],
       ),
@@ -179,7 +179,20 @@ class _Section extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        Text(title, style: AppTypography.titleMedium),
+        Row(
+          children: [
+            Container(
+              width: 3,
+              height: 16,
+              decoration: const BoxDecoration(
+                color: AppColors.primary,
+                borderRadius: BorderRadius.all(Radius.circular(2)),
+              ),
+            ),
+            const SizedBox(width: 8),
+            Text(title, style: AppTypography.titleMedium),
+          ],
+        ),
         const SizedBox(height: AppSizes.paddingS),
         child,
       ],

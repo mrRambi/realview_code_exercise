@@ -98,9 +98,24 @@ class _DetailPlaceholder extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.person_outline, size: 64, color: AppColors.textMuted),
+          Container(
+            width: 72,
+            height: 72,
+            decoration: const BoxDecoration(
+              color: AppColors.primaryLight,
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.person_outline,
+              size: 36,
+              color: AppColors.primaryMid,
+            ),
+          ),
           const SizedBox(height: AppSizes.paddingM),
-          Text(AppStrings.selectAuthorHint, style: AppTypography.bodyMedium),
+          Text(
+            AppStrings.selectAuthorHint,
+            style: AppTypography.bodyMedium.copyWith(color: AppColors.textMuted),
+          ),
         ],
       ),
     );

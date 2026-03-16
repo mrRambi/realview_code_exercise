@@ -27,7 +27,7 @@ class AuthorListTile extends StatelessWidget {
         leading: _AuthorAvatar(author: author),
         title: Text(author.name, style: AppTypography.titleMedium),
         subtitle: _AuthorSubtitle(author: author),
-        trailing: const Icon(Icons.chevron_right, color: AppColors.textMuted),
+        trailing: const Icon(Icons.chevron_right, size: 18, color: AppColors.primaryMid),
         onTap: onTap ??
             () => Navigator.of(context).push(
               MaterialPageRoute(

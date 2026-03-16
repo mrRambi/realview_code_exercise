@@ -109,9 +109,24 @@ class _EmptyState extends StatelessWidget {
       child: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          Icon(Icons.person_search, size: 64, color: AppColors.textMuted),
+          Container(
+            width: 72,
+            height: 72,
+            decoration: const BoxDecoration(
+              color: AppColors.primaryLight,
+              shape: BoxShape.circle,
+            ),
+            child: const Icon(
+              Icons.person_search,
+              size: 36,
+              color: AppColors.primaryMid,
+            ),
+          ),
           const SizedBox(height: AppSizes.paddingM),
-          Text(AppStrings.searchHint, style: AppTypography.bodyMedium),
+          Text(
+            AppStrings.searchHint,
+            style: AppTypography.bodyMedium.copyWith(color: AppColors.textMuted),
+          ),
         ],
       ),
     );
